@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "926705414960",
+    "project_id": "ingredientbutler",
+    "storage_bucket": "ingredientbutler.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926705414960:android:a9ef88fb3cca3bdc19cef5",
+        "android_client_info": {
+          "package_name": "com.example.ingredient_butler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "926705414960-oquhjihokujo0fa29p0932viu8u01uhl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl-nSzpPuZkK-2AKlyfIjAyBstaTdObHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "926705414960-oquhjihokujo0fa29p0932viu8u01uhl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "926705414960-136tr3n57i1s32mp8jvt0uiknc8hnra6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ingredientButler"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
