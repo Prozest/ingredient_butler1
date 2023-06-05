@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ingredient_butler/utils/menuItem_class.dart';
 import 'package:ingredient_butler/utils/comment_class.dart';
-import 'package:ingredient_butler/utils/order_class.dart';
+import 'package:ingredient_butler/utils/order_core.dart';
 import 'package:ingredient_butler/user/user_utils.dart';
 
 class ViewMenuState extends StatefulWidget {
@@ -54,7 +54,7 @@ class _ViewMenuState extends State<ViewMenuState> {
                                   widthFactor: 0.3,
                                   child: ElevatedButton(
                                       onPressed: () {
-                                        openDialog();
+                                        openOrderDialogBox();
                                       },
                                       child: const Text(
                                         "ORDER",
@@ -141,7 +141,7 @@ class _ViewMenuState extends State<ViewMenuState> {
         }
       });
 
-  Future openDialog() => showDialog(
+  Future openOrderDialogBox() => showDialog(
       context: context,
       builder: (context) => AlertDialog(
             title: const Text("Select Quantity"),
@@ -159,7 +159,7 @@ class _ViewMenuState extends State<ViewMenuState> {
                       },
                       child: const Text("Cancel")),
                   TextButton(onPressed: () {
-                    OrderClass.createOrderToCart(
+                    OrderCore.createOrderToCart(
                       menuID: id,
                       userID: FirebaseAuth.instance.currentUser!.uid,
                       quantity: int.parse(quantityController.text)

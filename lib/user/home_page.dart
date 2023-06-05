@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ingredient_butler/admin/admin_page.dart';
 import 'package:ingredient_butler/utils/menuItem_class.dart';
+import 'package:ingredient_butler/utils/oldorder_class.dart';
 import 'package:ingredient_butler/utils/order_class.dart';
+import 'package:ingredient_butler/utils/order_core.dart';
 import 'package:ingredient_butler/user/user_utils.dart';
 import 'package:ingredient_butler/user/view_menu_item.dart';
 
@@ -18,6 +20,8 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[];
+
+  final user = FirebaseAuth.instance.currentUser!;
 
   _HomePageState() {
     _widgetOptions = <Widget>[menuItemPage(), cartPage()];
@@ -153,13 +157,11 @@ class _HomePageState extends State<HomePage> {
       );
 
   Widget cartPage() {
-    final user = FirebaseAuth.instance.currentUser!;
-
     return Scaffold(
       body: ListView(
         children: [
-          StreamBuilder<List<OrderClass>>(
-              stream: OrderClass.readCartOrders(user.uid),
+          StreamBuilder<List<OrderDetails>>(
+              stream: OrderCore.readCart(user.uid),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Text('Data not found ${snapshot.error}');
@@ -177,14 +179,14 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {OrderClass.finishCart(user.uid);}, 
+        onPressed: () {OrderCore.finishCart(user.uid);}, 
         label: const Text("Order Cart"),
         icon: const Icon(Icons.shopping_cart),),
     );
   }
 
-  Widget buildOrderWidget(OrderClass orderClass) => FutureBuilder<MenuItem?>(
-      future: MenuItem.readMenuItem(orderClass.menuID),
+  Widget buildOrderWidget(OrderDetails orderDetails) => FutureBuilder<MenuItem?>(
+      future: MenuItem.readMenuItem(orderDetails.menuID),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Data not found ${snapshot.error}');
@@ -192,8 +194,8 @@ class _HomePageState extends State<HomePage> {
           if (snapshot.hasData) {
             final menuItem = snapshot.data;
 
-            return orderWidget(menuItem!.name, orderClass.id, orderClass.userID,
-                orderClass.quantity);
+            return orderWidget(menuItem!.name, orderDetails.id,
+                orderDetails.quantity);
           } else {
             return Container();
           }
@@ -201,13 +203,13 @@ class _HomePageState extends State<HomePage> {
       });
 
   Widget orderWidget(
-          String menuName, String cartId, String uid, num quantity) =>
+          String menuName, String cartId, num quantity) =>
       Row(children: [
         SizedBox(width: 300, child: Text(menuName)),
         Text(quantity.toString()),
         ElevatedButton(
           onPressed: () {
-            OrderClass.deleteCartOrder(cartId: cartId, uid: uid);
+            OrderCore.deleteCartOrder(cartId: cartId, uid: user.uid);
           },
           style: ElevatedButton.styleFrom(shape: const CircleBorder()),
           child: const Icon(

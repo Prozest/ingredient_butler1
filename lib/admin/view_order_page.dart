@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ingredient_butler/utils/order_class.dart';
+import 'package:ingredient_butler/utils/oldorder_class.dart';
 
 class ViewOrderState extends StatefulWidget {
   final String id;
@@ -18,8 +18,8 @@ class _ViewOrderState extends State<ViewOrderState> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: FutureBuilder<OrderClass?>(
-          future: OrderClass.readOrder(id),
+        body: FutureBuilder<OldOrderClass?>(
+          future: OldOrderClass.readOrder(id),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text('Data not found ${snapshot.error}');

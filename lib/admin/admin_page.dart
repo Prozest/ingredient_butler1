@@ -6,8 +6,9 @@ import 'package:ingredient_butler/admin/view_order_page.dart';
 import 'package:ingredient_butler/user/home_page.dart';
 import 'package:ingredient_butler/user/user_utils.dart';
 import 'package:ingredient_butler/utils/menuItem_class.dart';
+import 'package:ingredient_butler/utils/oldorder_class.dart';
 import 'package:ingredient_butler/utils/order_class.dart';
-import 'package:get/get.dart';
+import 'package:ingredient_butler/utils/order_core.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _AdminPageState extends State<AdminPage> {
         TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
     _widgetOptions = <Widget>[
       showMenuItems(), //Page 1
-      showCurrentOrders(), //Page 2
+      orderPage(), //Page 2
       const Text(
         'Index 2: School',
         style: optionStyle,
@@ -136,30 +137,109 @@ class _AdminPageState extends State<AdminPage> {
         ],
       );
 
-  Widget buildOrderWidget(OrderClass orderClass) => FutureBuilder<MenuItem?>(
-      future: MenuItem.readMenuItem(orderClass.menuID),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text('Data not found ${snapshot.error}');
-        } else {
-          if (snapshot.hasData) {
-            final menuItem = snapshot.data;
+  Widget orderPage() => ListView(
+    shrinkWrap: true,
+    children: [
+      FutureBuilder<List<OrderClass>>(
+          future: OrderCore.readAllCartOrders(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Data not found ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              final orders = snapshot.data!;
+      
+              return Padding(
+                padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
+                child: Column(
+                    children: orders.map(buildOrderWidget).toList()),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          }),
+    ],
+  );
+
+  Widget buildOrderWidget(OrderClass orderClass) {
+    return ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        Text(orderClass.uid),
+        Text(orderClass.state),
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: orderClass.cart.length,
+          itemBuilder: (context, index) {
             return FutureBuilder(
-                future: UserUtils.getUser(orderClass.userID),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final user = snapshot.data;
-                    return orderWidget(menuItem!.name, user!.name,
-                        orderClass.quantity, orderClass.id);
+                future: MenuItem.readMenuItem(orderClass.cart[index].menuID),
+                builder: (context, menuItemSnap) {
+                  if (menuItemSnap.hasError) {
+                    return Text('Data not found ${menuItemSnap.error}');
                   } else {
-                    return const CircularProgressIndicator();
+                    if (menuItemSnap.hasData) {
+                      final menuItem = menuItemSnap.data;
+    
+                      return FutureBuilder(
+                          future: UserUtils.getUser(orderClass.uid),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              final user = snapshot.data;
+                              return orderWidget(
+                                  menuItem!.name,
+                                  user!.name,
+                                  orderClass.cart[index].quantity,
+                                  orderClass.id);
+                            } else {
+                              return const CircularProgressIndicator();
+                            }
+                          });
+                    } else {
+                      return Container();
+                    }
                   }
                 });
-          } else {
-            return Container();
-          }
-        }
-      });
+          },
+        )
+      ],
+    );
+
+    /*List<Widget> orderWidgets = [];
+
+    for (int i = 0; i < orderClass.cart.length; i++) {
+      orderWidgets.add(FutureBuilder<MenuItem?>(
+          future: MenuItem.readMenuItem(orderClass.cart[i].menuID),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Data not found ${snapshot.error}');
+            } else {
+              if (snapshot.hasData) {
+                final menuItem = snapshot.data;
+                return FutureBuilder(
+                    future: UserUtils.getUser('ghv'),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final user = snapshot.data;
+                        return orderWidget(menuItem!.name, user!.name,
+                            orderClass.cart[i].quantity, orderClass.id);
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
+                    });
+              } else {
+                return Container();
+              }
+            }
+          }));
+    }
+
+    return ListView.builder(
+      itemBuilder: (context, index) => ,
+    )*/
+  }
 
   Widget orderWidget(
           String menuName, String userName, num quantity, String orderID) =>
@@ -230,29 +310,5 @@ class _AdminPageState extends State<AdminPage> {
             ),
           ),
         ),
-      );
-
-  Widget showCurrentOrders() => ListView(
-        children: [
-          StreamBuilder<List<OrderClass>>(
-              stream: OrderClass.readOrders(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Text('Data not found ${snapshot.error}');
-                } else if (snapshot.hasData) {
-                  final orders = snapshot.data!;
-
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 10, right: 10),
-                    child:
-                        Column(children: orders.map(buildOrderWidget).toList()),
-                  );
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              }),
-        ],
       );
 }
