@@ -99,7 +99,7 @@ class OrderCore{
         orderDetails.add(OrderDetails(menuID: allCartsQuery.docs[i]['products'][j]['menuID'], quantity: allCartsQuery.docs[i]['products'][j]['quantity']));
       }
 
-      allCarts.add(OrderClass(state: "In Preparation", uid: allCartsQuery.docs[i]['userID'], cart: orderDetails));
+      allCarts.add(OrderClass(id: allCartsQuery.docs[i]['id'],state: "In Preparation", uid: allCartsQuery.docs[i]['userID'], cart: orderDetails));
     }
 
     return allCarts;
