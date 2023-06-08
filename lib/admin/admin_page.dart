@@ -111,30 +111,6 @@ class _AdminPageState extends State<AdminPage> {
             )),
       );
 
-  Widget showMenuItems() => ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10, top: 15, right: 10),
-            child: StreamBuilder<List<MenuItem>>(
-                stream: MenuItem.readMenuItems(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('Data not found ${snapshot.error}');
-                  } else if (snapshot.hasData) {
-                    final menuItems = snapshot.data!;
-
-                    return Column(
-                        children: menuItems.map(buildAdminMenuItem).toList());
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                }),
-          ),
-        ],
-      );
-
   Widget orderPage() => ListView(
         shrinkWrap: true,
         children: [
