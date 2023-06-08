@@ -31,19 +31,22 @@ class UserAccount {
   final bool admin;
   final String name;
   final int age;
+  final String id;
 
   UserAccount({
     required this.admin,
     required this.name,
     required this.age,
+    required this.id,
   });
 
   Map<String, dynamic> toJson() => {
         'admin': admin,
         'name': name,
         'age': age,
+        'id': id,
       };
 
   static UserAccount fromJson(Map<String, dynamic> json) =>
-      UserAccount(admin: json['admin'], name: json['name'], age: json['age']);
+      UserAccount(admin: json['admin'], name: json['name'], age: json['age'], id: json['id']);
 }

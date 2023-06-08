@@ -158,14 +158,18 @@ class _ViewMenuState extends State<ViewMenuState> {
                         Navigator.pop(context);
                       },
                       child: const Text("Cancel")),
-                  TextButton(onPressed: () {
-                    OrderCore.createOrderToCart(
-                      menuID: id,
-                      userID: FirebaseAuth.instance.currentUser!.uid,
-                      quantity: int.parse(quantityController.text)
-                    );
-                    Navigator.pop(context);
-                  }, child: const Text("Finish Order")),
+                  TextButton(
+                      onPressed: () async {
+                        if (await MenuItem.checkStock(
+                            id, int.parse(quantityController.text))) {
+                          OrderCore.createOrderToCart(
+                              menuID: id,
+                              userID: FirebaseAuth.instance.currentUser!.uid,
+                              quantity: int.parse(quantityController.text));
+                        }
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Finish Order")),
                 ],
               ),
             ],

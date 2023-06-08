@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ingredient_butler/utils/order_class.dart';
+import 'package:ingredient_butler/utils/menuItem_class.dart';
 class OrderCore{
 
   static Map<String, dynamic> toJson_OrderDetails(OrderDetails orderDetails) => {
@@ -27,6 +28,7 @@ class OrderCore{
         );
 
     final json = OrderCore.toJson_OrderDetails(orderObj);
+    MenuItem.addRemoveStock(orderObj.menuID, -orderObj.quantity);  
 
     await docOrder.set(json);
   }
@@ -50,6 +52,13 @@ class OrderCore{
         .collection('cart')
         .doc(cartId);
 
+    final snapshot = await docCartOrder.get();
+
+    if (snapshot.exists) {
+
+      OrderDetails order = fromJson_OrderDetails(snapshot.data()!);  
+      MenuItem.addRemoveStock(order.menuID, order.quantity);  
+    }
     await docCartOrder.delete();
   }
 
@@ -68,7 +77,7 @@ class OrderCore{
         'menuID': orders.docs[i]['menuID'],
         'quantity': orders.docs[i]['quantity'],
       });
-      //deleteCartOrder(cartId: orders.docs[i]['id'], uid: uid);
+      deleteCartOrder(cartId: orders.docs[i]['id'], uid: uid);
     }
 
     var dateTime = DateTime.now();
@@ -78,7 +87,8 @@ class OrderCore{
       'id': '${dateTime.millisecondsSinceEpoch}',
       'time': dateTime,
       'userID': uid,
-      'products':products
+      'products':products,
+      'state': "Cooking"
     });
   }
 
@@ -99,11 +109,9 @@ class OrderCore{
         orderDetails.add(OrderDetails(menuID: allCartsQuery.docs[i]['products'][j]['menuID'], quantity: allCartsQuery.docs[i]['products'][j]['quantity']));
       }
 
-      allCarts.add(OrderClass(id: allCartsQuery.docs[i]['id'],state: "In Preparation", uid: allCartsQuery.docs[i]['userID'], cart: orderDetails));
+      allCarts.add(OrderClass(id: allCartsQuery.docs[i]['id'],state: allCartsQuery.docs[i]['state'], uid: allCartsQuery.docs[i]['userID'], cart: orderDetails));
     }
 
     return allCarts;
   }
-
-  
 }
