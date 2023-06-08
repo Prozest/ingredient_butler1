@@ -103,10 +103,10 @@ class menuItemDetailsPage extends StatelessWidget {
               )
             ],
           ),
-          const SizedBox(height: 100),
+          const SizedBox(height: 20),
           SizedBox(
             width: double.infinity,
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               updateButton(context),
               const SizedBox(
                 width: 20,
@@ -205,54 +205,48 @@ class menuItemDetailsPage extends StatelessWidget {
             icon: const Icon(Icons.remove)));
   }
 
-  SizedBox updateButton(BuildContext context) {
-    return SizedBox(
-      width: 180,
-      child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => AdminUpdateItemState(menuItem.id)));
-          },
-          child: const Text("Update")),
-    );
+  Widget updateButton(BuildContext context) {
+    return ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AdminUpdateItemState(menuItem.id)));
+        },
+        child: const Text("Update"));
   }
 
-  SizedBox deleteButton(BuildContext context) {
-    return SizedBox(
-      width: 180,
-      child: ElevatedButton(
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text("Delete?"),
-                  content: const Text(
-                      "Are you sure you want to delete this menu item?"),
-                  actions: [
-                    TextButton(
-                        onPressed: () {
-                          MenuItem.deleteMenuItem(id: id);
-                          Navigator.of(context).pop();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AdminPage()));
-                        },
-                        child: const Text("Yes")),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text("No")),
-                  ],
-                );
-              });
-        },
-        child: const Text("Delete"),
-      ),
+  Widget deleteButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Delete?"),
+                content: const Text(
+                    "Are you sure you want to delete this menu item?"),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        MenuItem.deleteMenuItem(id: id);
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AdminPage()));
+                      },
+                      child: const Text("Yes")),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text("No")),
+                ],
+              );
+            });
+      },
+      child: const Text("Delete"),
     );
   }
 }

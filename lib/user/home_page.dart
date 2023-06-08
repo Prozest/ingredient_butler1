@@ -75,19 +75,9 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Colors.red,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
+            icon: Icon(Icons.shopping_cart),
             label: 'Cart',
             backgroundColor: Colors.green,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
-            backgroundColor: Colors.purple,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-            backgroundColor: Colors.pink,
           ),
         ],
         currentIndex: _selectedIndex,

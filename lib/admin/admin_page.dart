@@ -24,10 +24,6 @@ class _AdminPageState extends State<AdminPage> {
     _widgetOptions = <Widget>[
       menuItemPage(), //Page 1
       orderPage(), //Page 2
-      const Text(
-        'Index 2: School',
-        style: optionStyle,
-      ),
       CreateItemPage() //Page 4
     ];
   }
@@ -55,22 +51,17 @@ class _AdminPageState extends State<AdminPage> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: 'Home',
+              label: 'Menu Items',
               backgroundColor: Colors.red,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.business),
-              label: 'Business',
+              icon: Icon(Icons.list_alt),
+              label: 'Orders',
               backgroundColor: Colors.green,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.school),
-              label: 'School',
-              backgroundColor: Colors.purple,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
+              icon: Icon(Icons.add_box_outlined),
+              label: 'New Item',
               backgroundColor: Colors.pink,
             ),
           ],

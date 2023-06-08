@@ -46,47 +46,68 @@ class _ViewMenuState extends State<ViewMenuState> {
 
                     return menuItem == null
                         ? const Center(child: Text("Could not get data"))
-                        : ListView(
-                            children: [
-                              Text(menuItem.name),
-                              Text(menuItem.cost.toString()),
-                              FractionallySizedBox(
-                                  widthFactor: 0.3,
-                                  child: ElevatedButton(
-                                      onPressed: () {
-                                        openOrderDialogBox();
-                                      },
-                                      child: const Text(
-                                        "ORDER",
-                                        style: TextStyle(
-                                            fontSize: 16, letterSpacing: 1),
-                                      ))),
-                              showComments(),
-                              TextField(
-                                maxLines: 5,
-                                minLines: 1,
-                                controller: commentController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Write a comment!',
-                                  border: OutlineInputBorder(),
+                        : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListView(
+                              children: [
+                                const SizedBox(
+                                  height: 10,
                                 ),
-                              ),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: SizedBox(
-                                  width: 110,
-                                  child: ElevatedButton(
-                                      onPressed: () {
-                                        Comment.createComment(
-                                          text: commentController.text,
-                                          menuID: id,
-                                          username: user.name,
-                                        );
-                                      },
-                                      child: const Text("COMMENT")),
+                                Text(
+                                  menuItem.name,
+                                  style: const TextStyle(fontSize: 20),
                                 ),
-                              ),
-                            ],
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  '${menuItem.cost.toString()} Rf.',
+                                  style: const TextStyle(fontSize: 20),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                FractionallySizedBox(
+                                    widthFactor: 0.3,
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          openOrderDialogBox();
+                                        },
+                                        child: const Text(
+                                          "ORDER",
+                                          style: TextStyle(
+                                              fontSize: 16, letterSpacing: 1),
+                                        ))),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                showComments(),
+                                TextField(
+                                  maxLines: 5,
+                                  minLines: 1,
+                                  controller: commentController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Write a comment!',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: SizedBox(
+                                    width: 110,
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          Comment.createComment(
+                                            text: commentController.text,
+                                            menuID: id,
+                                            username: user.name,
+                                          );
+                                        },
+                                        child: const Text("COMMENT")),
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
                   } else {
                     return const Center(
