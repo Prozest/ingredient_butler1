@@ -30,6 +30,7 @@ class _ViewMenuState extends State<ViewMenuState> {
         leading: const BackButton(),
         automaticallyImplyLeading: false,
         title: Text(name),
+        backgroundColor: const Color.fromARGB(255, 38, 45, 146),
       ),
       body: FutureBuilder<UserAccount?>(
         future: UserUtils.readUser(),

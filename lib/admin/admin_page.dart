@@ -32,6 +32,7 @@ class _AdminPageState extends State<AdminPage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: const Text('Ingredient Butler'),
+          backgroundColor: const Color.fromARGB(255, 38, 45, 146),
           actions: <Widget>[
             Padding(
                 padding: const EdgeInsets.only(right: 20),
@@ -126,36 +127,31 @@ class _AdminPageState extends State<AdminPage> {
             )),
       );
 
-  Widget orderPage() => Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          ListView(
-            shrinkWrap: true,
-            children: [
-              FutureBuilder<List<OrderClass>>(
-                  future: OrderCore.readAllCartOrders(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Data not found ${snapshot.error}');
-                    } else if (snapshot.hasData) {
-                      final orders = snapshot.data!;
+  Widget orderPage() => ListView(
+    shrinkWrap: true,
+    children: [
+      FutureBuilder<List<OrderClass>>(
+          future: OrderCore.readAllCartOrders(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Data not found ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              final orders = snapshot.data!;
 
-                      return Padding(
-                        padding:
-                            const EdgeInsets.only(top: 0, left: 0, right: 0),
-                        child: Column(
-                            children: orders.map(buildOrderWidget).toList()),
-                      );
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  }),
-            ],
-          ),
-        ],
-      );
+              return Padding(
+                padding:
+                    const EdgeInsets.only(top: 0, left: 0, right: 0),
+                child: Column(
+                    children: orders.map(buildOrderWidget).toList()),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          }),
+    ],
+  );
 
   Widget buildOrderWidget(OrderClass orderClass) {
     return FutureBuilder<UserAccount?>(
@@ -279,9 +275,9 @@ class _AdminPageState extends State<AdminPage> {
           decoration: const BoxDecoration(
               color: Colors.green,
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
-          child: Center(
+          child: const Center(
             child: Text(
-              state,
+              "Processing",
               style: const TextStyle(color: Colors.white, fontSize: 18),
               textAlign: TextAlign.center,
             ),

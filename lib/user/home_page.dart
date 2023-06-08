@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('Ingredient Butler'),
+        backgroundColor: const Color.fromARGB(255, 38, 45, 146),
         actions: <Widget>[
           FutureBuilder<UserAccount?>(
             future: UserUtils.readUser(),

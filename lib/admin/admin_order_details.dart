@@ -21,6 +21,7 @@ class _ViewOrderState extends State<ViewOrderState> {
         appBar: AppBar(
           leading: const BackButton(),
           automaticallyImplyLeading: false,
+          backgroundColor: const Color.fromARGB(255, 38, 45, 146),
           title: Text("Order ${orderClass.id}"),
         ),
         body: FutureBuilder<UserAccount?>(

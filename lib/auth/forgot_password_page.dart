@@ -23,7 +23,7 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
 
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      backgroundColor: Colors.transparent,
+      backgroundColor: const Color.fromARGB(255, 38, 45, 146),
       elevation: 0,
       title: Text('Reset Password'),
     ),

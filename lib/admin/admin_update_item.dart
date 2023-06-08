@@ -22,6 +22,7 @@ class _AdminUpdateItemState extends State<AdminUpdateItemState> {
         appBar: AppBar(
           leading: const BackButton(),
           automaticallyImplyLeading: false,
+          backgroundColor: const Color.fromARGB(255, 38, 45, 146),
           title: Text('Update Menu Item'),
         ),
         body: FutureBuilder<MenuItem?>(

@@ -23,6 +23,7 @@ class _AdminViewMenuState extends State<AdminViewMenuState> {
           leading: const BackButton(),
           automaticallyImplyLeading: false,
           title: Text(name),
+          backgroundColor: const Color.fromARGB(255, 38, 45, 146),
         ),
         body: FutureBuilder<MenuItem?>(
           future: MenuItem.readMenuItem(id),
